@@ -27,7 +27,7 @@ But, it’s not always clear whether a person’s words are actually announcing 
 I am running a couple of experiments to show the performace of different solutions and their trade-off - how long does it take to get a prediction from a given algorithm? Is a higher accuracy worth the wait?
 
 
-![(Re) Introduction to Tensorflow Natural Language Processing](https://github.com/mpolinowski/tf-nlp-2023/blob/master/assets/tf_nlp_desaster_tweets_06.png)
+![(Re) Introduction to Tensorflow Natural Language Processing](./assets/tf_nlp_desaster_tweets_06.png)
 
 
 ## Dataset
@@ -548,7 +548,8 @@ out_m.close()
 # Upload both files to the [Tensorflow Projector](https://projector.tensorflow.org/)
 ```
 
-![(Re) Introduction to Tensorflow Natural Language Processing](https://github.com/mpolinowski/tf-nlp-2023/blob/master/assets/tf_nlp_desaster_tweets_01.png)
+![(Re) Introduction to Tensorflow Natural Language Processing](./assets/tf_nlp_desaster_tweets_01.png)
+
 
 The projection shows a clear separation between our two classes showing each word in our vocabulary as a member of one of two clusters.
 
@@ -1118,7 +1119,7 @@ print(np.array(list(model_6_metrics.values())) > np.array(list(baseline_metrics.
 # [False False False  True]
 ```
 
-### Model 6a (added Dense Layer)
+### Model 6a
 
 The model get's close to the baseline model - I will try to add another Dense layer and see if this improves the performance.
 
@@ -1474,7 +1475,7 @@ print(model_6c_metrics)
 print(np.array(list(model_6c_metrics.values())) > np.array(list(model_6b_metrics.values())))
 # [False False False False]
 print(np.array(list(model_6c_metrics.values())) > np.array(list(baseline_metrics.values())))
-# [False False False False]
+# [False False False  True]
 ```
 
 ## Compare Experiments
@@ -1530,7 +1531,7 @@ model_metrics_all_transposed_sorted.plot(
 )
 ```
 
-![(Re) Introduction to Tensorflow Natural Language Processing](https://github.com/mpolinowski/tf-nlp-2023/blob/master/assets/tf_nlp_desaster_tweets_02.png)
+![(Re) Introduction to Tensorflow Natural Language Processing](./assets/tf_nlp_desaster_tweets_02.png)
 
 ```python
 # Load TensorBoard
@@ -1538,9 +1539,9 @@ model_metrics_all_transposed_sorted.plot(
 %tensorboard --logdir './tensorboad/'
 ```
 
-![(Re) Introduction to Tensorflow Natural Language Processing](https://github.com/mpolinowski/tf-nlp-2023/blob/master/assets/tf_nlp_desaster_tweets_03.png)
+![(Re) Introduction to Tensorflow Natural Language Processing](./assets/tf_nlp_desaster_tweets_03.png)
 
-![(Re) Introduction to Tensorflow Natural Language Processing](https://github.com/mpolinowski/tf-nlp-2023/blob/master/assets/tf_nlp_desaster_tweets_04.png)
+![(Re) Introduction to Tensorflow Natural Language Processing](./assets/tf_nlp_desaster_tweets_04.png)
 
 
 ## Saving & Loading Trained Model
@@ -1592,7 +1593,7 @@ loaded_model_6a_saved_model.evaluate(val_tweets, val_labels) == model_6a.evaluat
 # find most wrong predictions
 ## create dataframe with validation tweets, labels and model predictions
 loaded_model_pred_probs = tf.squeeze(loaded_model_6a_saved_model.predict(val_tweets))
-loaded_model_preds = tf.round(loaded_model_preds)
+loaded_model_preds = tf.round(loaded_model_pred_probs)
 print(loaded_model_preds[:5])
 # [0. 1. 1. 0. 1.]
 ```
@@ -1875,24 +1876,13 @@ Text: @_Souuul * gains super powers im now lava girl throws you ina chest wrappe
 ## Speed/Score Tradeoff
 
 ```python
-# def time_to_prediction(model, samples):
-#     start_time = time.perf_counter()
-#     model.predict(samples)
-#     end_time = time.perf_counter()
-#     time_to_prediction = end_time - start_time
-#     prediction_time_weighted = time_to_prediction / len(samples)
-
-#     return time_to_prediction, prediction_time_weighted
-```
-
-```python
 model_6_time_to_prediction, model_6_prediction_time_weighted = time_to_prediction(
     model = loaded_model_6a_saved_model,
     samples = test_tweets
 )
 
 print(model_6_time_to_prediction, model_6_prediction_time_weighted)
-# 0.4922969689941965 0.0001508725004579211
+# 0.5129240550013492 0.00015719401011380607
 ```
 
 ```python
@@ -1902,7 +1892,7 @@ model_0_time_to_prediction, model_0_prediction_time_weighted = time_to_predictio
 )
 
 print(model_0_time_to_prediction, model_0_prediction_time_weighted)
-# 0.05065811199892778 1.5525011338929752e-05
+# 0.05225817499922414 1.6015376953485792e-05
 ```
 
 ```python
@@ -1923,7 +1913,7 @@ prediction_times_df.plot(
 )
 ```
 
-![(Re) Introduction to Tensorflow Natural Language Processing](https://github.com/mpolinowski/tf-nlp-2023/blob/master/assets/tf_nlp_desaster_tweets_05.png)
+![(Re) Introduction to Tensorflow Natural Language Processing](./assets/tf_nlp_desaster_tweets_05.png)
 
 
 #### Comparing the Performance of all Models
@@ -1993,4 +1983,8 @@ plt.xlabel('Time to Prediction')
 plt.ylabel('F1-Score')
 ```
 
-![(Re) Introduction to Tensorflow Natural Language Processing](https://github.com/mpolinowski/tf-nlp-2023/blob/master/assets/tf_nlp_desaster_tweets_06.png)
+![(Re) Introduction to Tensorflow Natural Language Processing](./assets/tf_nlp_desaster_tweets_06.png)
+
+```python
+
+```
